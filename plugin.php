@@ -205,6 +205,13 @@ function json_api_default_filters( $server ) {
 	add_filter( 'json_prepare_post', array( $wp_json_post_meta, 'add_post_meta_data' ), 10, 3 );
 	add_filter( 'json_insert_post',  array( $wp_json_post_meta, 'insert_post_meta'   ), 10, 2 );
 
+	// Custom data.
+	add_filter('json_prepare_post', 'add_custom_fields_meta', 10, 3);
+	add_filter('json_prepare_page', 'add_custom_fields_meta', 10, 3);
+	add_filter('json_prepare_attachment', 'add_custom_fields_meta', 10, 3);
+	add_filter('json_prepare_term', 'add_custom_taxonomies_meta', 10, 2);
+	add_filter('json_prepare_user', 'add_custom_users_meta', 10, 2);
+
 	// Deprecated reporting.
 	add_action( 'deprecated_function_run',           'json_handle_deprecated_function', 10, 3 );
 	add_filter( 'deprecated_function_trigger_error', '__return_false'                         );

@@ -78,6 +78,60 @@ class WP_JSON_Meta_Posts extends WP_JSON_Meta {
 	}
 
 	/**
+	 * Add custom fields to meta data on a post.
+	 *
+	 * @param array $data {
+	 *     @type string|null $key Meta key
+	 *     @type string|null $key Meta value
+	 * }
+	 * @param array $post Post data
+	 * @param string $context Context for the prepared post.
+	 * @return WP_Error|array Filtered data
+	*/
+	public function add_custom_fields_meta($data, $post, $context) {
+		$customFields = (array) get_fields($post['ID']);
+	    $data['meta'] = array_merge($data['meta'], $customFields);
+
+	    return $data;
+	}
+
+	/**
+	 * Add custom taxonomies to meta data on a post.
+	 *
+	 * @param array $data {
+	 *     @type string|null $key Meta key
+	 *     @type string|null $key Meta value
+	 * }
+	 * @param array $post Post data
+	 * @return WP_Error|array Filtered data
+	*/
+	public function add_custom_taxonomies_meta($data, $post) {
+	    $customTaxonomies = (array) get_fields($post->taxonomy."_". $post->term_id);
+	    $data['meta'] = array_merge($data['meta'], $customTaxonomies);
+
+	    return $data;
+	}
+
+	/**
+	 * Add custom users to meta data on a post.
+	 *
+	 * @param array $data {
+	 *     @type string|null $key Meta key
+	 *     @type string|null $key Meta value
+	 * }
+	 * @param array $post Post data
+	 * @return WP_Error|array Filtered data
+	*/
+
+	public function add_custom_users_meta($data, $post) {
+		$customUsers = (array) get_fields("user_". $response['ID']);
+	    $data['meta'] = array_merge($data['meta'], $customUsers);
+
+	    return $data;
+	}
+
+
+	/**
 	 * Add post meta to post responses.
 	 *
 	 * Adds meta to post responses for the 'edit' context.
